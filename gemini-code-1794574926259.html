@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Удаление фона | WebApp</title>
+    <!-- Подключаем Tailwind CSS для быстрого и красивого дизайна -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col justify-between font-sans">
+
+    <!-- Шапка -->
+    <header class="py-6 px-8 border-b border-slate-800 text-center">
+        <h1 class="text-3xl font-extrabold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
+            AI Background Remover
+        </h1>
+        <p class="text-slate-400 text-sm mt-1">Удаляйте фон с изображений прямо в браузере с помощью нейросетей</p>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="max-w-4xl mx-auto px-4 py-8 flex-grow w-full">
+        
+        <!-- Зона загрузки файла -->
+        <div id="drop-zone" class="border-2 border-dashed border-slate-700 hover:border-blue-500 rounded-2xl p-10 text-center cursor-pointer transition bg-slate-800/50 backdrop-blur">
+            <input type="file" id="file-input" accept="image/*" class="hidden">
+            <div class="flex flex-col items-center pointer-events-none">
+                <svg class="w-16 h-16 text-blue-400 mb-4 animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                </svg>
+                <p class="text-lg font-medium">Перетащите картинку сюда или <span class="text-blue-400 underline">выберите файл</span></p>
+                <p class="text-xs text-slate-500 mt-2">Поддерживаются PNG, JPG, WEBP (до 10 МБ)</p>
+            </div>
+        </div>
+
+        <!-- Индикатор загрузки / Процесс обработки -->
+        <div id="loader" class="hidden text-center py-12">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-blue-500 border-t-transparent mb-4"></div>
+            <p id="loader-text" class="text-slate-300 font-medium">Инициализация ИИ-модели...</p>
+            <p class="text-xs text-slate-500 mt-1">Первый запуск может занять до 30 секунд (загрузка весов модели)</p>
+        </div>
+
+        <!-- Результат -->
+        <div id="result-container" class="hidden mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 text-center">
+                <h3 class="text-sm font-semibold text-slate-400 mb-3">Оригинал</h3>
+                <img id="original-preview" class="max-h-80 mx-auto rounded-lg object-contain" alt="Оригинальное изображение">
+            </div>
+            <div class="bg-slate-800 p-4 rounded-xl border border-slate-700 text-center flex flex-col justify-between">
+                <div>
+                    <h3 class="text-sm font-semibold text-slate-400 mb-3">Без фона</h3>
+                    <!-- Шахматный фон для отображения прозрачности -->
+                    <div class="checkerboard-bg inline-block rounded-lg overflow-hidden max-h-80">
+                        <img id="result-preview" class="max-h-80 mx-auto object-contain" alt="Результат без фона">
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <a id="download-btn" class="w-full inline-block bg-blue-600 hover:bg-blue-500 text-white font-medium py-2.5 px-4 rounded-lg transition shadow-lg shadow-blue-600/30 text-center cursor-pointer">
+                        Скачать PNG
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Подвал -->
+    <footer class="py-4 text-center text-xs text-slate-500 border-t border-slate-800">
+        Работает на базе WebAssembly и <a href="https://github.com/imgly/background-removal-js" target="_blank" class="text-blue-400 underline">@imgly/background-removal</a>
+    </footer>
+
+    <!-- Подключаем логику скрипта -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>
